@@ -1,0 +1,28 @@
+{
+  "type": "crafting_shaped",
+  "pattern": [
+    "  C",
+    "  S",
+    "CBC"
+  ],
+  "key": {
+    "C": [
+      {
+        "item": "create:andesite_casing"
+      }
+    ],
+    "S":[
+      {
+        "item": "create:shaft"
+      }
+    ],
+    "B":[
+      {
+        "item": "create:belt_connector"
+      }
+    ]
+  },
+  "result": {
+    "id": "createtreadmill:treadmill_item"
+  }
+}

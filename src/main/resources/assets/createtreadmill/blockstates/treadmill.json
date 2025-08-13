@@ -1,0 +1,46 @@
+{
+  "variants": {
+    "facing=north,part=top_front": {
+      "model": "createtreadmill:block/treadmill",
+      "y": 90
+    },
+    "facing=south,part=top_front": {
+      "model": "createtreadmill:block/treadmill",
+      "y": 270
+    },
+    "facing=west,part=top_front": {
+      "model": "createtreadmill:block/treadmill",
+      "y": 0
+    },
+    "facing=east,part=top_front": {
+      "model": "createtreadmill:block/treadmill",
+      "y": 180
+    },
+    "part=top_back": {
+      "model": "createtreadmill:block/air_back"
+    },
+    "part=bottom_back": {
+      "model": "create:block/andesite_casing"
+    },
+    "part=bottom_front,facing=south": {
+      "model": "create:block/encased_shaft/block_andesite",
+      "x": 90,
+      "y": 90
+    },
+    "part=bottom_front,facing=north": {
+      "model": "create:block/encased_shaft/block_andesite",
+      "x": 90,
+      "y": 90
+    },
+    "part=bottom_front,facing=west": {
+      "model": "create:block/encased_shaft/block_andesite",
+      "x": 90,
+      "y": 180
+    },
+    "part=bottom_front,facing=east": {
+      "model": "create:block/encased_shaft/block_andesite",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "block.createtreadmill.treadmill": "Treadmill",
+  "task.createtreadmill.use_treadmill": "Treadmill",
+  "task.createtreadmill.use_treadmill.desc": "The maid will use nearby treadmills"
+}
