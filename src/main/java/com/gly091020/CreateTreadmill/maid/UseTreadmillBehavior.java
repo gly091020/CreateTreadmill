@@ -45,8 +45,8 @@ public class UseTreadmillBehavior extends Behavior<EntityMaid> {
     }
 
     @Override
-    protected boolean canStillUse(ServerLevel level, EntityMaid entity, long gameTime) {
-        return true;
+    protected boolean canStillUse(@NotNull ServerLevel level, EntityMaid entity, long gameTime) {
+        return entity.getTask() instanceof UseTreadmillTask;
     }
 
     @Override
@@ -88,6 +88,11 @@ public class UseTreadmillBehavior extends Behavior<EntityMaid> {
             var blockEntity = getBlockEntity(level, maid);
             if (blockEntity != null) {
                 blockEntity.setOnTreadmillEntity(null);
+            }
+        }else if(level.getBlockState(maid.getOnPos()).is(CreateTreadmillMod.TREADMILL_BLOCK)){
+            var p1 = TreadmillBlock.findPart(level, level.getBlockState(maid.getOnPos()), maid.getOnPos(), Part.BOTTOM_FRONT);
+            if(p1 != null && level.getBlockEntity(p1) instanceof TreadmillBlockEntity entity){
+                entity.setOnTreadmillEntity(null);
             }
         }
         maid.getBrain().eraseMemory(MaidPlugin.TREADMILL_MEMORY.get());

@@ -94,7 +94,12 @@ public class TreadmillVisual extends KineticBlockEntityVisual<TreadmillBlockEnti
     public void update(float partialTick) {
         if(blockState.getValue(TreadmillBlock.PART) != Part.BOTTOM_FRONT){return;}
         shaft.setup(blockEntity).setChanged();
-        belt.speed(0, -blockEntity.getSpeed() * BeltVisual.MAGIC_SCROLL_MULTIPLIER).setChanged();
+        float speed = 0;
+        switch (blockState.getValue(TreadmillBlock.HORIZONTAL_FACING)){
+            case NORTH, EAST -> speed = blockEntity.getSpeed();
+            case SOUTH, WEST -> speed = -blockEntity.getSpeed();
+        }
+        belt.speed(0, speed * BeltVisual.MAGIC_SCROLL_MULTIPLIER).setChanged();
     }
 
     @Override

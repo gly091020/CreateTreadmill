@@ -1,12 +1,13 @@
 package com.gly091020.CreateTreadmill.block;
 
+import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.Part;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
@@ -20,7 +21,7 @@ import static com.gly091020.CreateTreadmill.block.TreadmillBlock.PART;
 import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
 
 public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
-    private Entity onTreadmillEntity;
+    private LivingEntity onTreadmillEntity;
     private boolean isRunning = false;
     private boolean isRuned = false;
     public TreadmillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -56,9 +57,13 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
         super.tick();
     }
 
-    public void setOnTreadmillEntity(@Nullable Entity onTreadmillEntity) {
+    public void setOnTreadmillEntity(@Nullable LivingEntity onTreadmillEntity) {
         if(onTreadmillEntity == null && this.onTreadmillEntity != null){
             this.onTreadmillEntity.setDeltaMovement(Vec3.ZERO);
+            CreateTreadmillMod.WALKING_ENTITY.remove(this.onTreadmillEntity.getId());
+        }
+        if (onTreadmillEntity != null) {
+            CreateTreadmillMod.WALKING_ENTITY.put(onTreadmillEntity.getId(), onTreadmillEntity);
         }
         this.onTreadmillEntity = onTreadmillEntity;
         setPos();
@@ -72,6 +77,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     public void setPos(){
         if(onTreadmillEntity != null){
             onTreadmillEntity.setPos(getFixedPos());
+            onTreadmillEntity.setOnGround(true);
         }
     }
 
