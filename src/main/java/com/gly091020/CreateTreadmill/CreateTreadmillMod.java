@@ -1,6 +1,5 @@
 package com.gly091020.CreateTreadmill;
 
-import com.github.tartaricacid.touhoulittlemaid.event.EntityHurtEvent;
 import com.gly091020.CreateTreadmill.block.TreadmillBlock;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
 import com.gly091020.CreateTreadmill.item.TreadmillItem;
@@ -23,7 +22,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;

@@ -7,11 +7,9 @@ import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
-import com.simibubi.create.content.kinetics.belt.BeltSlope;
 import dev.engine_room.flywheel.api.visualization.VisualizationManager;
 import dev.engine_room.flywheel.lib.transform.TransformStack;
 import net.createmod.catnip.animation.AnimationTickHolder;
-import net.createmod.catnip.math.AngleHelper;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SpriteShiftEntry;
 import net.createmod.catnip.render.SuperByteBuffer;
@@ -23,6 +21,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 
 public class TreadmillRenderer extends KineticBlockEntityRenderer<TreadmillBlockEntity> {
@@ -37,7 +36,7 @@ public class TreadmillRenderer extends KineticBlockEntityRenderer<TreadmillBlock
     }
 
     @Override
-    public boolean shouldRender(TreadmillBlockEntity blockEntity, Vec3 cameraPos) {
+    public boolean shouldRender(@NotNull TreadmillBlockEntity blockEntity, @NotNull Vec3 cameraPos) {
         return super.shouldRender(blockEntity, cameraPos) && blockEntity.getBlockState().getValue(TreadmillBlock.PART) == Part.BOTTOM_FRONT;
     }
 
