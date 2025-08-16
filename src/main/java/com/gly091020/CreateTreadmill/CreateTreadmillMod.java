@@ -1,5 +1,6 @@
 package com.gly091020.CreateTreadmill;
 
+import com.github.tartaricacid.touhoulittlemaid.event.EntityHurtEvent;
 import com.gly091020.CreateTreadmill.block.TreadmillBlock;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
 import com.gly091020.CreateTreadmill.item.TreadmillItem;
@@ -19,6 +20,7 @@ import net.createmod.catnip.render.SpriteShifter;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.bus.api.Event;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
@@ -72,7 +74,12 @@ public class CreateTreadmillMod {
         @SubscribeEvent
         public static void onRenderEntity(RenderLivingEvent.Pre event){
             if(WALKING_ENTITY.containsKey(event.getEntity().getId()) && !(event.getEntity() instanceof Player)) {
-                event.getEntity().walkAnimation.setSpeed(2);
+                var speed = 1;
+                var entity = TreadmillBlockEntity.getBlockEntityByEntity(event.getEntity());
+                if(entity != null && Math.abs(entity.getSpeed()) > entity.getSettingSpeed()){
+                    speed = 3;
+                }
+                event.getEntity().walkAnimation.setSpeed(speed);
             }
         }
     }

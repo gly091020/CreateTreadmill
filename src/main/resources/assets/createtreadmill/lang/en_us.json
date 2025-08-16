@@ -1,5 +1,6 @@
 {
   "block.createtreadmill.treadmill": "Treadmill",
   "task.createtreadmill.use_treadmill": "Treadmill",
-  "task.createtreadmill.use_treadmill.desc": "The maid will use nearby treadmills"
+  "task.createtreadmill.use_treadmill.desc": "The maid will use nearby treadmills",
+  "tip.createtreadmill.speedup": "正在加速，剩余%s秒"
 }
