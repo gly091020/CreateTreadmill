@@ -83,16 +83,17 @@ public class UseTreadmillBehavior extends Behavior<EntityMaid> {
 
     @Override
     protected void stop(@NotNull ServerLevel level, EntityMaid maid, long gameTime) {
+        if(level.getBlockState(maid.getOnPos()).is(CreateTreadmillMod.TREADMILL_BLOCK)){
+            var p1 = TreadmillBlock.findPart(level, level.getBlockState(maid.getOnPos()), maid.getOnPos(), Part.BOTTOM_FRONT);
+            if(p1 != null && level.getBlockEntity(p1) instanceof TreadmillBlockEntity entity){
+                entity.setOnTreadmillEntity(null);
+            }
+        }
         var p = maid.getBrain().getMemory(MaidPlugin.TREADMILL_MEMORY.get());
         if (p.isPresent() && p.get().closerThan(maid.blockPosition(), 2)) {
             var blockEntity = getBlockEntity(level, maid);
             if (blockEntity != null) {
                 blockEntity.setOnTreadmillEntity(null);
-            }
-        }else if(level.getBlockState(maid.getOnPos()).is(CreateTreadmillMod.TREADMILL_BLOCK)){
-            var p1 = TreadmillBlock.findPart(level, level.getBlockState(maid.getOnPos()), maid.getOnPos(), Part.BOTTOM_FRONT);
-            if(p1 != null && level.getBlockEntity(p1) instanceof TreadmillBlockEntity entity){
-                entity.setOnTreadmillEntity(null);
             }
         }
         maid.getBrain().eraseMemory(MaidPlugin.TREADMILL_MEMORY.get());

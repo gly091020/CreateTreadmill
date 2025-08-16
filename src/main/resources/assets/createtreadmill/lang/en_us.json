@@ -16,5 +16,9 @@
   "createtreadmill.ponder.treadmill_speedup.header": "Speed Boost",
   "createtreadmill.ponder.treadmill_speedup.text_1": "32 RPM",
   "createtreadmill.ponder.treadmill_speedup.text_2": "When an entity on the treadmill is attacked, the treadmill speeds up for one minute (double speed, non-stackable).",
-  "createtreadmill.ponder.treadmill_speedup.text_3": "64 RPM"
+  "createtreadmill.ponder.treadmill_speedup.text_3": "64 RPM",
+
+  "createtreadmill.ponder.treadmill_maid.header": "Touhou Maid Collaboration",
+  "createtreadmill.ponder.treadmill_maid.text_1": "If you have Touhou Maid Mod installed, you can assign the 'Treadmill' task to maids, allowing them to operate the treadmill.",
+  "createtreadmill.ponder.treadmill_maid.text_2": "Of course, the previous mechanics still apply normally..."
 }

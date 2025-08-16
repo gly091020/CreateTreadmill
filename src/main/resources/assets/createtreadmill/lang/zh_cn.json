@@ -16,5 +16,9 @@
   "createtreadmill.ponder.treadmill_speedup.header": "勇敢的木~",
   "createtreadmill.ponder.treadmill_speedup.text_1": "32 RPM",
   "createtreadmill.ponder.treadmill_speedup.text_2": "当跑步机上的实体被攻击时，跑步机会加速一分钟（两倍速度，不可叠加）",
-  "createtreadmill.ponder.treadmill_speedup.text_3": "64 RPM"
+  "createtreadmill.ponder.treadmill_speedup.text_3": "64 RPM",
+
+  "createtreadmill.ponder.treadmill_maid.header": "车万女仆？车万奴仆！",
+  "createtreadmill.ponder.treadmill_maid.text_1": "如果你安装了车万女仆，你可以指定女仆任务为“跑步机”来让女仆使用跑步机",
+  "createtreadmill.ponder.treadmill_maid.text_2": "当然，之前的操作也是通用的……"
 }
