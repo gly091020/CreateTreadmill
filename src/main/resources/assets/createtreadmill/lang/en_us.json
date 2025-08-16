@@ -2,5 +2,19 @@
   "block.createtreadmill.treadmill": "Treadmill",
   "task.createtreadmill.use_treadmill": "Treadmill",
   "task.createtreadmill.use_treadmill.desc": "The maid will use nearby treadmills",
-  "tip.createtreadmill.speedup": "正在加速，剩余%s秒"
+  "tip.createtreadmill.speedup": "Speeding up, %s seconds remaining",
+
+  "createtreadmill.ponder.treadmill_run.header": "Using the Treadmill",
+  "createtreadmill.ponder.treadmill_run.text_1": "This is a treadmill.",
+  "createtreadmill.ponder.treadmill_run.text_2": "Normally, only players can stand on it and run forward to power the treadmill.",
+
+  "createtreadmill.ponder.treadmill_fly.header": "Drop it!",
+  "createtreadmill.ponder.treadmill_fly.text_1": "The stress on this treadmill is reversed...",
+  "createtreadmill.ponder.treadmill_fly.text_2": "So creatures standing on it will be thrown off.",
+  "createtreadmill.ponder.treadmill_fly.text_3": "I won't actually move the entity... Let's pretend a villager got launched.",
+
+  "createtreadmill.ponder.treadmill_speedup.header": "Speed Boost",
+  "createtreadmill.ponder.treadmill_speedup.text_1": "32 RPM",
+  "createtreadmill.ponder.treadmill_speedup.text_2": "When an entity on the treadmill is attacked, the treadmill speeds up for one minute (double speed, non-stackable).",
+  "createtreadmill.ponder.treadmill_speedup.text_3": "64 RPM"
 }

@@ -43,6 +43,7 @@ public class TreadmillRenderer extends KineticBlockEntityRenderer<TreadmillBlock
 
     @Override
     protected void renderSafe(TreadmillBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+        if(be.getBlockState().getValue(TreadmillBlock.PART) != Part.BOTTOM_FRONT){return;}
         if (be.getLevel() != null) {
             light = LevelRenderer.getLightColor(be.getLevel(), be.getBlockPos().above());
         }
