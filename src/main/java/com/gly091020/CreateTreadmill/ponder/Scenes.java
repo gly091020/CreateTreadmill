@@ -55,10 +55,20 @@ public class Scenes {
         scene.world().setKineticSpeed(selection, -32);
         scene.overlay().showText(40)
                 .placeNearTarget()
-                .text("一般情况下只可以让玩家在上面，向前跑来驱动跑步机")
+                .text("可以让生物在上面向前跑来驱动跑步机")
                 .pointAt(util.vector().of(2, 2, 2));
+        scene.idle(45);
         scene.addKeyframe();
-        scene.idle(40);
+        scene.overlay().showText(40)
+                .placeNearTarget()
+                .text("玩家可以用拴绳将生物带到跑步机上")
+                .pointAt(util.vector().of(2, 2, 2));
+        scene.idle(45);
+        scene.overlay().showText(40)
+                .placeNearTarget()
+                .text("但是，它们可能不太愿意……")
+                .pointAt(util.vector().of(2, 2, 2));
+        scene.idle(45);
         scene.markAsFinished();
     }
 
@@ -152,6 +162,11 @@ public class Scenes {
         scene.overlay().showText(40)
                 .text("64 RPM")
                 .pointAt(util.vector().of(1.5, 1.5, 3));
+        scene.idle(55);
+        scene.overlay().showText(40)
+                .placeNearTarget()
+                .text("但我相信，跑步机上的生物会更想逃脱")
+                .pointAt(util.vector().of(2, 2, 2));
         scene.idle(45);
         scene.markAsFinished();
     }

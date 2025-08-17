@@ -87,7 +87,7 @@ public class CreateTreadmillMod {
                 var speed = 1;
                 var entity = TreadmillBlockEntity.getBlockEntityByEntity(event.getEntity());
                 if(entity != null && Math.abs(entity.getSpeed()) > entity.getSettingSpeed()){
-                    speed = 3;
+                    speed = (int) (Math.abs(entity.getSpeed()) / 32);
                 }
                 event.getEntity().walkAnimation.setSpeed(speed);
             }

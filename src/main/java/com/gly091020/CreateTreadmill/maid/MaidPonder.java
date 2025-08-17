@@ -47,6 +47,7 @@ public class MaidPonder {
                 entity.setCustomName(Component.literal(String.format("=>%s",
                         Minecraft.getInstance().getGameProfile().getName())));
             }
+            entity.walkAnimation.setSpeed(3);
             return entity;
         });
         scene.world().setKineticSpeed(selection, -32);
@@ -56,7 +57,13 @@ public class MaidPonder {
                 .text("当然，之前的操作也是通用的……")
                 .pointAt(util.vector().of(2, 2, 2));
         scene.addKeyframe();
-        scene.idle(40);
+        scene.idle(45);
+        scene.overlay().showText(40)
+                .placeNearTarget()
+                .text("而且女仆不会轻易逃脱……")
+                .pointAt(util.vector().of(2, 2, 2));
+        scene.addKeyframe();
+        scene.idle(45);
         scene.markAsFinished();
     }
 }

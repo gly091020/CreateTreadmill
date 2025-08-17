@@ -70,6 +70,7 @@ public class UseTreadmillBehavior extends Behavior<EntityMaid> {
                 var blockEntity = getBlockEntity(level, maid);
                 if (blockEntity != null) {
                     blockEntity.setOnTreadmillEntity(maid);
+                    blockEntity.setEntityTimer(Integer.MAX_VALUE);
                     maid.setHomeModeEnable(true);
                 }
             }

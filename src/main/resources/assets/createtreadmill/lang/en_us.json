@@ -3,10 +3,13 @@
   "task.createtreadmill.use_treadmill": "Treadmill",
   "task.createtreadmill.use_treadmill.desc": "The maid will use nearby treadmills",
   "tip.createtreadmill.speedup": "Speeding up, %s seconds remaining",
+  "tip.createtreadmill.break": "还有%s秒挣脱",
 
   "createtreadmill.ponder.treadmill_run.header": "Using the Treadmill",
   "createtreadmill.ponder.treadmill_run.text_1": "This is a treadmill.",
   "createtreadmill.ponder.treadmill_run.text_2": "Normally, only players can stand on it and run forward to power the treadmill.",
+  "createtreadmill.ponder.treadmill_run.text_3": "玩家可以用拴绳将生物带到跑步机上",
+  "createtreadmill.ponder.treadmill_run.text_4": "但是，它们可能不太愿意……",
 
   "createtreadmill.ponder.treadmill_fly.header": "Drop it!",
   "createtreadmill.ponder.treadmill_fly.text_1": "The stress on this treadmill is reversed...",
@@ -20,5 +23,6 @@
 
   "createtreadmill.ponder.treadmill_maid.header": "Touhou Maid Collaboration",
   "createtreadmill.ponder.treadmill_maid.text_1": "If you have Touhou Maid Mod installed, you can assign the 'Treadmill' task to maids, allowing them to operate the treadmill.",
-  "createtreadmill.ponder.treadmill_maid.text_2": "Of course, the previous mechanics still apply normally..."
+  "createtreadmill.ponder.treadmill_maid.text_2": "Of course, the previous mechanics still apply normally...",
+  "createtreadmill.ponder.treadmill_maid.text_3": "而且女仆不会轻易逃脱……"
 }

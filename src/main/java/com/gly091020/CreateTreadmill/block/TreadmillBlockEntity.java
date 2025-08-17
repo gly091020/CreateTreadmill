@@ -8,10 +8,13 @@ import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,6 +26,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import static com.gly091020.CreateTreadmill.block.TreadmillBlock.PART;
+import static com.gly091020.CreateTreadmill.block.TreadmillBlock.findPart;
 import static com.simibubi.create.content.kinetics.base.HorizontalKineticBlock.HORIZONTAL_FACING;
 
 public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
@@ -30,6 +34,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     private boolean isRunning = false;
     private boolean isRuned = false;
     private int speedUpTimer = 0;
+    private int entityTimer = Integer.MAX_VALUE;
     public TreadmillBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         setChanged();
@@ -43,7 +48,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
                 setOnTreadmillEntity(null);
                 return;
             }
-            if(onTreadmillEntity instanceof Player && !onTreadmillEntity.position().closerThan(getFixedPos(), 0.5)){
+            if(!onTreadmillEntity.position().closerThan(getFixedPos(), 1)){
                 setOnTreadmillEntity(null);
                 return;
             }
@@ -57,6 +62,9 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
                 onTreadmillEntity.setDeltaMovement(Vec3.atLowerCornerOf(getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING).getNormal()).multiply(0.3f, 0, 0.3f));
                 onTreadmillEntity.lookAt(EntityAnchorArgument.Anchor.EYES, onTreadmillEntity.getEyePosition().relative(getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING), 1));
                 onTreadmillEntity.setPose(Pose.STANDING);
+                if(onTreadmillEntity instanceof TamableAnimal tamableAnimal){
+                    tamableAnimal.setInSittingPose(false);
+                }
                 lazyTick();
             }
             dropIt();
@@ -69,30 +77,58 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
         if(speedUpTimer > 0){
             speedUpTimer--;
         }
-    }
-
-    @Override
-    public void handleUpdateTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries) {
-        super.handleUpdateTag(tag, registries);
-        speedUpTimer = tag.getInt("speedup_timer");
+        if(entityTimer <= 0){
+            setOnTreadmillEntity(null);
+        }else if(entityTimer < Integer.MAX_VALUE){
+            entityTimer--;
+            if(speedUpTimer > 0){
+                entityTimer--;
+            }
+        }
     }
 
     @Override
     public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries) {
         var update = super.getUpdateTag(registries);
         update.putInt("speedup_timer", speedUpTimer);
+        update.putInt("entity_timer", entityTimer);
+        update.putInt("entity", onTreadmillEntity == null ? -1 : onTreadmillEntity.getId());
         return update;
+    }
+
+    @Override
+    public void onDataPacket(@NotNull Connection net, @NotNull ClientboundBlockEntityDataPacket pkt,
+                             HolderLookup.@NotNull Provider registries) {
+        super.onDataPacket(net, pkt, registries);
+        speedUpTimer = pkt.getTag().getInt("speedup_timer");
+        entityTimer = pkt.getTag().getInt("entity_timer");
+        var id = pkt.getTag().getInt("entity");
+        if(id != -1){
+            if (level != null) {
+                var entity = level.getEntity(id);
+                if(entity == null){return;}
+                setOnTreadmillEntity((LivingEntity) entity);
+            }
+        }else {
+            setOnTreadmillEntity(null);
+        }
+    }
+
+    public void setEntityTimer(int entityTimer) {
+        this.entityTimer = entityTimer;
     }
 
     public void setOnTreadmillEntity(@Nullable LivingEntity onTreadmillEntity) {
         if(onTreadmillEntity == null && this.onTreadmillEntity != null){
             this.onTreadmillEntity.setDeltaMovement(Vec3.ZERO);
             CreateTreadmillMod.WALKING_ENTITY.remove(this.onTreadmillEntity.getId());
+            this.onTreadmillEntity.walkAnimation.setSpeed(0);
         }
         if (onTreadmillEntity != null) {
             CreateTreadmillMod.WALKING_ENTITY.put(onTreadmillEntity.getId(), onTreadmillEntity);
         }else{
             speedUpTimer = 0;
+            entityTimer = Integer.MAX_VALUE;
         }
         this.onTreadmillEntity = onTreadmillEntity;
         setPos();
@@ -122,10 +158,20 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
 
     @Override
     public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
-        if(getBlockState().getValue(PART) != Part.BOTTOM_FRONT){return false;}
+        if(getBlockState().getValue(PART) != Part.BOTTOM_FRONT){
+            var p = findPart(level, getBlockState(), getBlockPos(), Part.BOTTOM_FRONT);
+            if (level != null && level.getBlockState(p).getValue(PART) == Part.BOTTOM_FRONT &&
+                    level.getBlockEntity(p) instanceof TreadmillBlockEntity treadmillBlockEntity) {
+                treadmillBlockEntity.addToGoggleTooltip(tooltip, isPlayerSneaking);
+                return true;
+            }
+        }
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
         if(speedUpTimer > 0){
             tooltip.add(Component.translatable("tip.createtreadmill.speedup", speedUpTimer / 20));
+        }
+        if(entityTimer > 0 && entityTimer < Integer.MAX_VALUE){
+            tooltip.add(Component.translatable("tip.createtreadmill.break", entityTimer / 20));
         }
         return true;
     }
@@ -186,11 +232,13 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
         if(isRunning && onTreadmillEntity instanceof Player player){
             player.causeFoodExhaustion(getSettingSpeed() * 0.01f);
         }
+        sendData();
     }
 
     private void update(){
         updateGeneratedRotation();
         notifyUpdate();
+        sendData();
     }
 
     private void dropIt(){
