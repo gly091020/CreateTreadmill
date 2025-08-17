@@ -20,9 +20,13 @@
   "createtreadmill.ponder.treadmill_speedup.text_1": "32 RPM",
   "createtreadmill.ponder.treadmill_speedup.text_2": "When an entity on the treadmill is attacked, the treadmill speeds up for one minute (double speed, non-stackable).",
   "createtreadmill.ponder.treadmill_speedup.text_3": "64 RPM",
+  "createtreadmill.ponder.treadmill_speedup.text_4": "但我相信，跑步机上的生物会更想逃脱",
 
   "createtreadmill.ponder.treadmill_maid.header": "Touhou Maid Collaboration",
   "createtreadmill.ponder.treadmill_maid.text_1": "If you have Touhou Maid Mod installed, you can assign the 'Treadmill' task to maids, allowing them to operate the treadmill.",
   "createtreadmill.ponder.treadmill_maid.text_2": "Of course, the previous mechanics still apply normally...",
-  "createtreadmill.ponder.treadmill_maid.text_3": "而且女仆不会轻易逃脱……"
+  "createtreadmill.ponder.treadmill_maid.text_3": "而且女仆不会轻易逃脱……",
+
+  "advancement.createtreadmill.run_to_die": "资本家",
+  "advancement.createtreadmill.run_to_die.desc": "让一个生物在跑步机上累死（你真残忍……）"
 }
