@@ -73,7 +73,6 @@ public class CreateTreadmillMod {
         if(ModList.get().isLoaded("touhou_little_maid")){
             MaidPlugin.registryData(bus);
         }
-        PonderIndex.addPlugin(new TreadmillPonderPlugin());
     }
 
     public static boolean isCreator(){
