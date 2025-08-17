@@ -3,13 +3,13 @@
   "task.createtreadmill.use_treadmill": "Treadmill",
   "task.createtreadmill.use_treadmill.desc": "The maid will use nearby treadmills",
   "tip.createtreadmill.speedup": "Speeding up, %s seconds remaining",
-  "tip.createtreadmill.break": "还有%s秒挣脱",
+  "tip.createtreadmill.break": "Breaking free in %s seconds",
 
   "createtreadmill.ponder.treadmill_run.header": "Using the Treadmill",
   "createtreadmill.ponder.treadmill_run.text_1": "This is a treadmill.",
-  "createtreadmill.ponder.treadmill_run.text_2": "Normally, only players can stand on it and run forward to power the treadmill.",
-  "createtreadmill.ponder.treadmill_run.text_3": "玩家可以用拴绳将生物带到跑步机上",
-  "createtreadmill.ponder.treadmill_run.text_4": "但是，它们可能不太愿意……",
+  "createtreadmill.ponder.treadmill_run.text_2": "Mobs can run on it to generate power.",
+  "createtreadmill.ponder.treadmill_run.text_3": "Players can leash mobs onto it.",
+  "createtreadmill.ponder.treadmill_run.text_4": "Though they might... resist a bit.",
 
   "createtreadmill.ponder.treadmill_fly.header": "Drop it!",
   "createtreadmill.ponder.treadmill_fly.text_1": "The stress on this treadmill is reversed...",
@@ -20,13 +20,13 @@
   "createtreadmill.ponder.treadmill_speedup.text_1": "32 RPM",
   "createtreadmill.ponder.treadmill_speedup.text_2": "When an entity on the treadmill is attacked, the treadmill speeds up for one minute (double speed, non-stackable).",
   "createtreadmill.ponder.treadmill_speedup.text_3": "64 RPM",
-  "createtreadmill.ponder.treadmill_speedup.text_4": "但我相信，跑步机上的生物会更想逃脱",
+  "createtreadmill.ponder.treadmill_speedup.text_4": "Though the mob might prioritize escaping over running...",
 
   "createtreadmill.ponder.treadmill_maid.header": "Touhou Maid Collaboration",
   "createtreadmill.ponder.treadmill_maid.text_1": "If you have Touhou Maid Mod installed, you can assign the 'Treadmill' task to maids, allowing them to operate the treadmill.",
   "createtreadmill.ponder.treadmill_maid.text_2": "Of course, the previous mechanics still apply normally...",
-  "createtreadmill.ponder.treadmill_maid.text_3": "而且女仆不会轻易逃脱……",
+  "createtreadmill.ponder.treadmill_maid.text_3": "And the maids won't escape so easily...",
 
-  "advancement.createtreadmill.run_to_die": "资本家",
-  "advancement.createtreadmill.run_to_die.desc": "让一个生物在跑步机上累死（你真残忍……）"
+  "advancement.createtreadmill.run_to_die": "Capitalist",
+  "advancement.createtreadmill.run_to_die.desc": "Kill a mob by exhaustion on a treadmill. (How cruel...)\n§7(Hidden Advancement)"
 }
