@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 public class UseTreadmillBehavior extends Behavior<EntityMaid> {
+    private boolean homeMode = false;
     public UseTreadmillBehavior() {
         super(Map.of());
     }
@@ -50,6 +51,13 @@ public class UseTreadmillBehavior extends Behavior<EntityMaid> {
     }
 
     @Override
+    protected void start(@NotNull ServerLevel level, @NotNull EntityMaid entity, long gameTime) {
+        super.start(level, entity, gameTime);
+        entity.getSchedulePos().setIdlePos(entity.getOnPos());
+        homeMode = entity.isHomeModeEnable();
+    }
+
+    @Override
     protected void tick(@NotNull ServerLevel level, @NotNull EntityMaid maid, long gameTime) {
         super.tick(level, maid, gameTime);
         if(!(maid.getTask() instanceof UseTreadmillTask)){
@@ -64,6 +72,7 @@ public class UseTreadmillBehavior extends Behavior<EntityMaid> {
                 return;
             }else{
                 maid.restrictTo(maid.getOnPos(), 50);
+                maid.getSchedulePos().setWorkPos(maid.getOnPos());
                 maid.getBrain().setMemory(MemoryModuleType.WALK_TARGET, new WalkTarget(pos, 0.5f, 1));
             }
             if (pos.closerThan(maid.blockPosition(), 2)) {
@@ -98,5 +107,6 @@ public class UseTreadmillBehavior extends Behavior<EntityMaid> {
             }
         }
         maid.getBrain().eraseMemory(MaidPlugin.TREADMILL_MEMORY.get());
+        maid.setHomeModeEnable(homeMode);
     }
 }
