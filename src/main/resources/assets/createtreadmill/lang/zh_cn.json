@@ -28,5 +28,17 @@
   "createtreadmill.ponder.treadmill_maid.text_3": "而且女仆不会轻易逃脱……",
 
   "advancement.createtreadmill.run_to_die": "资本家",
-  "advancement.createtreadmill.run_to_die.desc": "让一个生物在跑步机上累死（你真残忍……）\n§7（隐藏进度）"
+  "advancement.createtreadmill.run_to_die.desc": "让一个生物在跑步机上累死（你真残忍……）\n§7（隐藏进度）",
+
+  "config.createtreadmill.title": "机械动力：跑步机 设置",
+  "config.createtreadmill.stress": "跑步机应力",
+  "config.createtreadmill.stress.tip": "设置跑步机产生的应力",
+  "config.createtreadmill.base_speed": "跑步机基础速度",
+  "config.createtreadmill.base_speed.tip": "设置跑步机的基础速度",
+  "config.createtreadmill.drop_it": "跑步机丢人",
+  "config.createtreadmill.drop_it.tip": "跑步机是否可以甩开生物（动力接反时）",
+  "config.createtreadmill.break": "生物挣脱",
+  "config.createtreadmill.break.tip": "在跑步机上的生物是否可以挣脱",
+  "config.createtreadmill.speed_up": "跑步机加速",
+  "config.createtreadmill.speed_up.tip": "攻击跑步机上的生物是否可以加速"
 }

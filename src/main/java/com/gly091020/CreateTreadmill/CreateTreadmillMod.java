@@ -2,6 +2,8 @@ package com.gly091020.CreateTreadmill;
 
 import com.gly091020.CreateTreadmill.block.TreadmillBlock;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
+import com.gly091020.CreateTreadmill.config.ClothConfigScreenGetter;
+import com.gly091020.CreateTreadmill.config.TreadmillConfig;
 import com.gly091020.CreateTreadmill.item.TreadmillItem;
 import com.gly091020.CreateTreadmill.maid.MaidPlugin;
 import com.gly091020.CreateTreadmill.renderer.TreadmillRenderer;
@@ -14,6 +16,7 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
+import net.createmod.catnip.config.ui.SubMenuConfigScreen;
 import net.createmod.catnip.render.SpriteShiftEntry;
 import net.createmod.catnip.render.SpriteShifter;
 import net.minecraft.advancements.AdvancementHolder;
@@ -25,11 +28,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 
 import java.util.HashMap;
@@ -43,6 +51,7 @@ import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 public class CreateTreadmillMod {
     public static final String ModID = "createtreadmill";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final TreadmillConfig CONFIG = new TreadmillConfig();
 
     public static final CreateRegistrate REGISTRIES = CreateRegistrate.create(ModID);
 
@@ -53,7 +62,7 @@ public class CreateTreadmillMod {
     public static final BlockEntry<TreadmillBlock> TREADMILL_BLOCK = REGISTRIES
             .block("treadmill", TreadmillBlock::new)
             .initialProperties(SharedProperties::stone)
-            .onRegister(b -> BlockStressValues.CAPACITIES.register(b, () -> 16d))
+            .onRegister(b -> BlockStressValues.CAPACITIES.register(b, CONFIG.TREADMILL_STRESS::get))
             .transform(axeOrPickaxe())
             .register();
     public static final BlockEntityEntry<TreadmillBlockEntity> TREADMILL_ENTITY = REGISTRIES
@@ -70,11 +79,27 @@ public class CreateTreadmillMod {
     public static final UUID _5112151111121 = UUID.fromString("91bd580f-5f17-4e30-872f-2e480dd9a220");
     public static final UUID N44 = UUID.fromString("5a33e9b0-35bc-44ed-9b4e-03e3e180a3d2");
 
-    public CreateTreadmillMod(IEventBus bus) {
+    public CreateTreadmillMod(IEventBus bus, ModContainer container) {
+        Pair<TreadmillConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(builder -> {
+            CONFIG.registerAll(builder);
+            return CONFIG;
+        });
+        CONFIG.specification = specPair.getRight();
+        container.registerConfig(ModConfig.Type.COMMON, CONFIG.specification);
         REGISTRIES.registerEventListeners(bus);
         if(ModList.get().isLoaded("touhou_little_maid")){
             MaidPlugin.registryData(bus);
         }
+        container.registerExtensionPoint(IConfigScreenFactory.class, (mc, parent) -> {
+            if(ModList.get().isLoaded("cloth_config")){
+                return ClothConfigScreenGetter.get(parent);
+            }
+            if (CONFIG.specification != null) {
+                return new SubMenuConfigScreen(parent, ModConfig.Type.COMMON, CONFIG.specification);
+            }else{
+                throw new RuntimeException("Specification is null, wdf");
+            }
+        });
     }
 
     public static boolean isCreator(){

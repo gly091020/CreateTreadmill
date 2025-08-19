@@ -115,6 +115,10 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     }
 
     public void setEntityTimer(int entityTimer) {
+        if(!CreateTreadmillMod.CONFIG.TREADMILL_BREAK.get()){
+            this.entityTimer = Integer.MAX_VALUE;
+            return;
+        }
         this.entityTimer = entityTimer;
     }
 
@@ -147,6 +151,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     }
 
     public void speedUp(){
+        if(!CreateTreadmillMod.CONFIG.TREADMILL_SPEED_UP.get()){return;}
         if(onTreadmillEntity.hurtTime > 0 && !(onTreadmillEntity.getLastHurtMob() instanceof Player)){
             var damageSource = onTreadmillEntity.getLastDamageSource();
             if(damageSource != null && damageSource.getWeaponItem() != null){
@@ -242,6 +247,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     }
 
     private void dropIt(){
+        if(!CreateTreadmillMod.CONFIG.TREADMILL_DROP_IT.get()){return;}
         switch (getBlockState().getValue(TreadmillBlock.HORIZONTAL_FACING)) {
             case NORTH, EAST -> {
                 if(getSpeed() < 0){
@@ -277,7 +283,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     }
 
     public float getSettingSpeed(){
-        return 32;
+        return CreateTreadmillMod.CONFIG.TREADMILL_BASE_SPEED.get();
     }
 
     public boolean isMoving(){
