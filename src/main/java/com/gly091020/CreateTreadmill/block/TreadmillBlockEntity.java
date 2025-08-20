@@ -172,13 +172,25 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
             }
         }
         super.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        addToolTip(tooltip);
+        return true;
+    }
+
+    public void addToolTip(List<Component> tooltip){
+        if(getBlockState().getValue(PART) != Part.BOTTOM_FRONT){
+            var p = findPart(level, getBlockState(), getBlockPos(), Part.BOTTOM_FRONT);
+            if (level != null && level.getBlockState(p).getValue(PART) == Part.BOTTOM_FRONT &&
+                    level.getBlockEntity(p) instanceof TreadmillBlockEntity treadmillBlockEntity) {
+                treadmillBlockEntity.addToolTip(tooltip);
+                return;
+            }
+        }
         if(speedUpTimer > 0){
             tooltip.add(Component.translatable("tip.createtreadmill.speedup", speedUpTimer / 20));
         }
         if(entityTimer > 0 && entityTimer < Integer.MAX_VALUE){
             tooltip.add(Component.translatable("tip.createtreadmill.break", entityTimer / 20));
         }
-        return true;
     }
 
     public int getSpeedUpTimer() {

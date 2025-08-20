@@ -9,6 +9,7 @@ import com.gly091020.CreateTreadmill.maid.MaidPlugin;
 import com.gly091020.CreateTreadmill.renderer.TreadmillRenderer;
 import com.gly091020.CreateTreadmill.renderer.TreadmillVisual;
 import com.mojang.logging.LogUtils;
+import com.simibubi.create.AllCreativeModeTabs;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
@@ -16,16 +17,23 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import net.createmod.catnip.config.ui.SubMenuConfigScreen;
+import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.render.SpriteShiftEntry;
 import net.createmod.catnip.render.SpriteShifter;
 import net.minecraft.advancements.AdvancementHolder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.ResolvableProfile;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -37,6 +45,8 @@ import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 
@@ -54,11 +64,26 @@ public class CreateTreadmillMod {
     public static final TreadmillConfig CONFIG = new TreadmillConfig();
 
     public static final CreateRegistrate REGISTRIES = CreateRegistrate.create(ModID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TAB_REGISTER = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ModID);
 
     public static final ItemEntry<TreadmillItem> TREADMILL_ITEM = REGISTRIES
             .item("treadmill", TreadmillItem::new)
             .register();
-
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> CREATIVE_MODE_TAB = CREATIVE_MODE_TAB_REGISTER.register("treadmill",
+            () -> CreativeModeTab.builder()
+                    .title(Component.translatable("tab.createtreadmill.title"))
+                    .withTabsBefore(AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getId())
+                    .icon(TREADMILL_ITEM::asStack)
+                    .displayItems((itemDisplayParameters, output) -> {
+                        output.accept(TREADMILL_ITEM, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+                        if(isCreator()){
+                            ItemStack playerHand = new ItemStack(Items.PLAYER_HEAD, 1);
+                            playerHand.set(DataComponents.PROFILE, new ResolvableProfile(Minecraft.getInstance().getGameProfile()));
+                            output.accept(playerHand, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+                        }
+                    })
+                    .build()
+    );
     public static final BlockEntry<TreadmillBlock> TREADMILL_BLOCK = REGISTRIES
             .block("treadmill", TreadmillBlock::new)
             .initialProperties(SharedProperties::stone)
@@ -87,6 +112,7 @@ public class CreateTreadmillMod {
         CONFIG.specification = specPair.getRight();
         container.registerConfig(ModConfig.Type.COMMON, CONFIG.specification);
         REGISTRIES.registerEventListeners(bus);
+        CREATIVE_MODE_TAB_REGISTER.register(bus);
         if(ModList.get().isLoaded("touhou_little_maid")){
             MaidPlugin.registryData(bus);
         }
@@ -94,11 +120,7 @@ public class CreateTreadmillMod {
             if(ModList.get().isLoaded("cloth_config")){
                 return ClothConfigScreenGetter.get(parent);
             }
-            if (CONFIG.specification != null) {
-                return new SubMenuConfigScreen(parent, ModConfig.Type.COMMON, CONFIG.specification);
-            }else{
-                throw new RuntimeException("Specification is null, wdf");
-            }
+            return new BaseConfigScreen(parent, ModID);
         });
     }
 
@@ -109,7 +131,7 @@ public class CreateTreadmillMod {
     @EventBusSubscriber
     public static class HandleEvent{
         @SubscribeEvent
-        public static void onRenderEntity(RenderLivingEvent.Pre event){
+        public static void onRenderEntity(RenderLivingEvent.Pre<?, ?> event){
             if(WALKING_ENTITY.containsKey(event.getEntity().getId()) && !(event.getEntity() instanceof Player)) {
                 var speed = 1;
                 var entity = TreadmillBlockEntity.getBlockEntityByEntity(event.getEntity());

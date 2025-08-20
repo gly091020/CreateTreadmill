@@ -1,10 +1,11 @@
-package com.gly091020.CreateTreadmill.maid;
+package com.gly091020.CreateTreadmill.maid.treadmill;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.Part;
 import com.gly091020.CreateTreadmill.block.TreadmillBlock;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
+import com.gly091020.CreateTreadmill.maid.MaidPlugin;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;

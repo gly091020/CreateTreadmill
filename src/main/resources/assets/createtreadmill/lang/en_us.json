@@ -1,4 +1,6 @@
 {
+  "tab.createtreadmill.title": "Create: Treadmill",
+
   "block.createtreadmill.treadmill": "Treadmill",
   "task.createtreadmill.use_treadmill": "Treadmill",
   "task.createtreadmill.use_treadmill.desc": "The maid will use nearby treadmills",
@@ -40,5 +42,7 @@
   "config.createtreadmill.break": "Entity Escape",
   "config.createtreadmill.break.tip": "Whether entities on the treadmill can break free",
   "config.createtreadmill.speed_up": "Treadmill Boost",
-  "config.createtreadmill.speed_up.tip": "Whether attacking entities on the treadmill speeds it up"
+  "config.createtreadmill.speed_up.tip": "Whether attacking entities on the treadmill speeds it up",
+
+  "config.jade.plugin_createtreadmill.treadmill_provider": "Treadmill"
 }

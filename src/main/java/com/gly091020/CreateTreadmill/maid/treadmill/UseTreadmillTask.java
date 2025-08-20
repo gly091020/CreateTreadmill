@@ -1,4 +1,4 @@
-package com.gly091020.CreateTreadmill.maid;
+package com.gly091020.CreateTreadmill.maid.treadmill;
 
 import com.github.tartaricacid.touhoulittlemaid.api.task.IMaidTask;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
