@@ -15,6 +15,10 @@ repositories {
     maven {
         url "https://cursemaven.com"
     }
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
 }
 
 base {
@@ -126,12 +130,13 @@ dependencies {
     compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
-    implementation "curse.maven:touhou-little-maid-355044:6657437"
+    implementation "curse.maven:touhou-little-maid-355044:7198494"
     runtimeOnly "curse.maven:jade-324717:6853386"
     runtimeOnly("curse.maven:modern-ui-352491:6200236")
     implementation "curse.maven:cloth-config-348521:5729127"
     implementation "curse.maven:jade-324717:6853386"
-    compileOnly files("libs/touhou_little_mad-0.1.2-alpha.jar")  // todo:临时依赖，后面要换成 modrinth maven
+    compileOnly files("libs/touhou_little_mad-0.1.2-alpha.jar")
+    implementation ("maven.modrinth:maidusehandcrank:NfLzVMT9")  // 女仆摇曲柄太超模了，我的数据还是保守了
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.

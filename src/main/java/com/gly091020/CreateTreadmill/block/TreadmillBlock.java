@@ -2,6 +2,7 @@ package com.gly091020.CreateTreadmill.block;
 
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.Part;
+import com.gly091020.CreateTreadmill.maid.MaidHelper;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
@@ -130,6 +131,9 @@ public class TreadmillBlock extends HorizontalKineticBlock implements IBE<Treadm
                     blockEntity.setEntityTimer(20 * 60);
                     if (entity1 instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() != null){
                         blockEntity.setEntityTimer(20 * 60 * 10);
+                    }
+                    if(CreateTreadmillMod.hasMaid() && MaidHelper.isMaid(entity1)){
+                        blockEntity.setEntityTimer(Integer.MAX_VALUE);
                     }
                     return ItemInteractionResult.SUCCESS;
                 }
