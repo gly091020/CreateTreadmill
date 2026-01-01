@@ -5,8 +5,18 @@ import com.github.tartaricacid.touhoulittlemaid.api.LittleMaidExtension;
 import com.github.tartaricacid.touhoulittlemaid.entity.ai.brain.ExtraMaidBrainManager;
 import com.github.tartaricacid.touhoulittlemaid.entity.task.TaskManager;
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
+import com.gly091020.CreateTreadmill.block.MaidMotorBlock;
+import com.gly091020.CreateTreadmill.block.MaidMotorBlockEntity;
+import com.gly091020.CreateTreadmill.item.MaidMotorItem;
 import com.gly091020.CreateTreadmill.maid.treadmill.TreadmillSensor;
 import com.gly091020.CreateTreadmill.maid.treadmill.UseTreadmillTask;
+import com.gly091020.CreateTreadmill.renderer.MaidMotorRenderer;
+import com.simibubi.create.AllPartialModels;
+import com.simibubi.create.content.kinetics.base.OrientedRotatingVisual;
+import com.simibubi.create.foundation.data.SharedProperties;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
+import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.entry.ItemEntry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -17,8 +27,25 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Optional;
 
+import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
+
 @LittleMaidExtension
 public class MaidPlugin implements ILittleMaid {
+    public static final ItemEntry<MaidMotorItem> MAID_MOTOR_ITEM = CreateTreadmillMod.REGISTRIES
+            .item("maid_motor", MaidMotorItem::new)
+            .register();
+    public static final BlockEntry<MaidMotorBlock> MAID_MOTOR_BLOCK = CreateTreadmillMod.REGISTRIES
+            .block("maid_motor", MaidMotorBlock::new)
+            .initialProperties(SharedProperties::stone)
+            .transform(axeOrPickaxe())
+            .register();
+    public static final BlockEntityEntry<MaidMotorBlockEntity> MAID_MOTOR_ENTITY = CreateTreadmillMod.REGISTRIES
+            .blockEntity("maid_motor_entity", MaidMotorBlockEntity::new)
+            .visual(() -> OrientedRotatingVisual.of(AllPartialModels.SHAFT_HALF), true)
+            .renderer(() -> MaidMotorRenderer::new)
+            .validBlock(MAID_MOTOR_BLOCK)
+            .register();
+
     public static DeferredHolder<MemoryModuleType<?>, MemoryModuleType<BlockPos>> TREADMILL_MEMORY;
     public static DeferredHolder<SensorType<?>, SensorType<TreadmillSensor>> TREADMILL_SENSOR;
     public static void registryData(IEventBus bus){
