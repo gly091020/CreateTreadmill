@@ -26,7 +26,7 @@ public class TreadmillPonderPlugin implements PonderPlugin {
                 .addStoryBoard("treadmill/run", Scenes::treadmillFly)
                 .addStoryBoard("treadmill/speedup", Scenes::treadmillSpeedUp);
         if(ModList.get().isLoaded("touhou_little_maid")){
-            MaidPonder.registry(r);
+            MaidPonder.registry(r, helper);
         }
     }
 
