@@ -181,7 +181,7 @@ public class MaidMotorBlockEntity extends CreativeMotorBlockEntity {
             maid = CreateTreadmillMod.CONFIG.MAID_MAGNIFICATION.get() * MaidHelper.getMaidLevel(this.maid);
             if(maid == 0)maid = 1;
         }
-        return CreateTreadmillMod.CONFIG.TREADMILL_STRESS.get() * CreateTreadmillMod.CONFIG.TREADMILL_BASE_SPEED.get() * maid * 2;  // 2倍是被攻击加速
+        return CreateTreadmillMod.CONFIG.TREADMILL_STRESS.get() * CreateTreadmillMod.CONFIG.TREADMILL_BASE_SPEED.get() * maid;
     }
 
     public float calculateMaidUseHandCrankStress(){
