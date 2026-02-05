@@ -2,7 +2,6 @@ package com.gly091020.CreateTreadmill;
 
 import com.gly091020.CreateTreadmill.block.TreadmillBlock;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
-import com.gly091020.CreateTreadmill.config.ClothConfigScreenGetter;
 import com.gly091020.CreateTreadmill.config.TreadmillConfig;
 import com.gly091020.CreateTreadmill.item.TreadmillItem;
 import com.gly091020.CreateTreadmill.little_mad.LittleMadRegistry;
@@ -18,7 +17,6 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
-import net.createmod.catnip.config.ui.BaseConfigScreen;
 import net.createmod.catnip.render.SpriteShiftEntry;
 import net.createmod.catnip.render.SpriteShifter;
 import net.minecraft.advancements.AdvancementHolder;
@@ -42,11 +40,8 @@ import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.common.ModConfigSpec;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -125,18 +120,6 @@ public class CreateTreadmillMod {
         if(ModList.get().isLoaded("touhou_little_mad")){
             LittleMadRegistry.registry();
         }
-        if(FMLEnvironment.dist.isClient()){
-            registryScreen(container);
-        }
-    }
-
-    public static void registryScreen(ModContainer container){
-        container.registerExtensionPoint(IConfigScreenFactory.class, (mc, parent) -> {
-            if(ModList.get().isLoaded("cloth_config")){
-                return ClothConfigScreenGetter.get(parent);
-            }
-            return new BaseConfigScreen(parent, ModID);
-        });
     }
 
     public static boolean isCreator(){
