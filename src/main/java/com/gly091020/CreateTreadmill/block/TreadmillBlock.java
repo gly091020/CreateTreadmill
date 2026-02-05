@@ -7,16 +7,23 @@ import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Leashable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -124,17 +131,21 @@ public class TreadmillBlock extends HorizontalKineticBlock implements IBE<Treadm
                 blockEntity.setOnTreadmillEntity(null);
                 return ItemInteractionResult.SUCCESS;
             }
-            for(Entity entity1: level.getEntities(null, new AABB(pos).inflate(10))){
-                if(entity1 instanceof LivingEntity livingEntity && entity1 instanceof Leashable leashable && leashable.getLeashHolder() != null && leashable.getLeashHolder().is(player)){
-                    blockEntity.setOnTreadmillEntity(livingEntity);
+            int radius = CreateTreadmillMod.CONFIG.TREADMILL_TEST_RADIUS.get();
+            for(Entity entity1: level.getEntities(null, new AABB(pos).inflate(radius))){
+                if(entity1 instanceof LivingEntity livingEntity && entity1 instanceof Leashable leashable &&
+                        leashable.getLeashHolder() != null && leashable.getLeashHolder().is(player)){
                     leashable.dropLeash(true, true);
-                    blockEntity.setEntityTimer(20 * 60);
-                    if (entity1 instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() != null){
-                        blockEntity.setEntityTimer(20 * 60 * 10);
-                    }
-                    if(CreateTreadmillMod.hasMaid() && MaidHelper.isMaid(entity1)){
-                        blockEntity.setEntityTimer(Integer.MAX_VALUE);
-                    }
+                    connect(blockEntity, livingEntity);
+                    return ItemInteractionResult.SUCCESS;
+                }
+                if(entity1 instanceof FishingHook fishingHook && fishingHook.getPlayerOwner() != null &&
+                        fishingHook.getPlayerOwner().is(player) && fishingHook.getHookedIn() instanceof LivingEntity livingEntity){
+                    if(livingEntity instanceof ArmorStand)continue;
+                    fishingHook.discard();
+                    if(player.getItemInHand(hand).is(Items.FISHING_ROD) && !player.isCreative() && !stack.has(DataComponents.UNBREAKABLE))
+                        stack.hurtAndBreak(1, player, LivingEntity.getSlotForHand(hand));
+                    connect(blockEntity, livingEntity);
                     return ItemInteractionResult.SUCCESS;
                 }
             }
@@ -142,6 +153,32 @@ public class TreadmillBlock extends HorizontalKineticBlock implements IBE<Treadm
             return ItemInteractionResult.SUCCESS;
         }
         return ItemInteractionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    public void connect(TreadmillBlockEntity blockEntity, LivingEntity entity){
+        blockEntity.setOnTreadmillEntity(entity);
+        blockEntity.setEntityTimer(20 * 60);
+        if (entity instanceof OwnableEntity ownableEntity && ownableEntity.getOwner() != null){
+            blockEntity.setEntityTimer(20 * 60 * 10);
+        }
+        if(CreateTreadmillMod.hasMaid() && MaidHelper.isMaid(entity)){
+            blockEntity.setEntityTimer(Integer.MAX_VALUE);
+        }
+        handleOtherEntity(blockEntity, entity);
+    }
+
+    public void handleOtherEntity(TreadmillBlockEntity blockEntity, LivingEntity entity){
+        int radius = CreateTreadmillMod.CONFIG.TREADMILL_TEST_RADIUS.get();
+        if(entity instanceof IronGolem)blockEntity.setEntityTimer(Integer.MAX_VALUE);
+        if(entity instanceof Villager){
+            var entities = entity.level().getEntities(null, AABB.ofSize(blockEntity.getBlockPos().getCenter(), radius, radius, radius));
+            for(Entity entity1: entities){
+                if(entity1 instanceof Player player && player.hasEffect(MobEffects.HERO_OF_THE_VILLAGE)){
+                    blockEntity.setEntityTimer(Integer.MAX_VALUE);
+                    return;
+                }
+            }
+        }
     }
 
     @Override

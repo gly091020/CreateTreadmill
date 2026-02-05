@@ -11,7 +11,7 @@
   "createtreadmill.ponder.treadmill_run.header": "比手摇曲柄更好",
   "createtreadmill.ponder.treadmill_run.text_1": "这是一台跑步机",
   "createtreadmill.ponder.treadmill_run.text_2": "可以让生物在上面向前跑来驱动跑步机",
-  "createtreadmill.ponder.treadmill_run.text_3": "玩家可以用拴绳将生物带到跑步机上",
+  "createtreadmill.ponder.treadmill_run.text_3": "玩家可以用拴绳或钓鱼竿将生物带到跑步机上",
   "createtreadmill.ponder.treadmill_run.text_4": "但是，它们可能不太愿意……",
 
   "createtreadmill.ponder.treadmill_fly.header": "装B让你___!",
@@ -65,5 +65,10 @@
   "createtreadmill.ponder.maid_motor.text_4": "可以在侧面调节输出速度",
   "createtreadmill.ponder.maid_motor.text_5": "用扳手点击后面可以开窗，将会显示内部的女仆。",
   "createtreadmill.ponder.maid_motor.text_6": "破坏马达后会保留女仆数据。",
-  "createtreadmill.ponder.maid_motor.text_7": "如果安装了女仆摇曲柄，女仆摇曲柄产生的应力会一并计算。"
+  "createtreadmill.ponder.maid_motor.text_7": "如果安装了女仆摇曲柄，女仆摇曲柄产生的应力会一并计算。",
+
+  "config.createtreadmill.treadmill_test_radius": "跑步机检测范围",
+  "config.createtreadmill.treadmill_test_radius.tip": "跑步机相关逻辑的检测范围",
+  "config.createtreadmill.treadmill_food_magnification": "饱食度减少乘数",
+  "config.createtreadmill.treadmill_food_magnification.tip": "控制玩家在跑步机上减少饱食度的速度"
 }

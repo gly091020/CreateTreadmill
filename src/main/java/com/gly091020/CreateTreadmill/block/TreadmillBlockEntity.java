@@ -8,19 +8,22 @@ import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.TamableAnimal;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -264,7 +267,8 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
             update();
         }
         if(isRunning && onTreadmillEntity instanceof Player player){
-            player.causeFoodExhaustion(getSettingSpeed() * 0.01f);
+            player.causeFoodExhaustion((float) (getSettingSpeed() *
+                    CreateTreadmillMod.CONFIG.TREADMILL_FOOD_MAGNIFICATION.get()));
         }
         sendData();
     }
@@ -323,13 +327,14 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
             if(player.isSprinting())
                 entitySpeed = 2; // tmd偷懒是吧
         }
+        var otherEntity = calculateOtherEntitySpeed();
         if (isRunning) {
             switch (getBlockState().getValue(TreadmillBlock.HORIZONTAL_FACING)) {
                 case NORTH, EAST -> {
-                    return getSettingSpeed() * speedUp * entitySpeed;
+                    return getSettingSpeed() * speedUp * entitySpeed * otherEntity;
                 }
                 case SOUTH, WEST -> {
-                    return -getSettingSpeed() * speedUp * entitySpeed;
+                    return -getSettingSpeed() * speedUp * entitySpeed * otherEntity;
                 }
             }
         }
@@ -414,5 +419,31 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
             entityUUID = compound.getUUID("onTreadmillEntity");
         }
         entityTimer = compound.contains("entityTimer") ? compound.getInt("entityTimer") : 0;
+    }
+
+    private static final TagKey<EntityType<?>> ZOMBIE = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.withDefaultNamespace("zombies"));
+    private static final TagKey<EntityType<?>> ILLAGER = TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.withDefaultNamespace("illager"));
+
+    public float calculateOtherEntitySpeed(){
+        if(level == null || onTreadmillEntity == null)return 1;
+        int radius = CreateTreadmillMod.CONFIG.TREADMILL_TEST_RADIUS.get();
+        if(onTreadmillEntity instanceof Villager){
+            var entities = level.getEntities(null, AABB.ofSize(getBlockPos().getCenter(), radius, radius, radius));
+            for(Entity entity: entities){
+                if(entity.getType().is(ZOMBIE) || entity.getType().is(ILLAGER))return 4;
+                if(entity instanceof Player player && player.hasEffect(MobEffects.HERO_OF_THE_VILLAGE))return 2;
+            }
+        }
+
+        if(onTreadmillEntity.getType().is(ZOMBIE) && onTreadmillEntity.isBaby()){
+            if(onTreadmillEntity instanceof Targeting targeting && targeting.getTarget() != null)return 7.5f;
+            return 4;
+        }
+
+        if(onTreadmillEntity.getType().is(ZOMBIE) || onTreadmillEntity.getType().is(ILLAGER)){
+            if(onTreadmillEntity instanceof Targeting targeting && targeting.getTarget() != null)return 3.5f;
+            return 2;
+        }
+        return 1;
     }
 }

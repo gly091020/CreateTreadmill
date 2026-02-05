@@ -11,7 +11,7 @@
   "createtreadmill.ponder.treadmill_run.header": "Using the Treadmill",
   "createtreadmill.ponder.treadmill_run.text_1": "This is a treadmill.",
   "createtreadmill.ponder.treadmill_run.text_2": "Mobs can run on it to generate power.",
-  "createtreadmill.ponder.treadmill_run.text_3": "Players can leash mobs onto it.",
+  "createtreadmill.ponder.treadmill_run.text_3": "Players can use a lead or fishing rod to bring creatures onto the treadmill.",
   "createtreadmill.ponder.treadmill_run.text_4": "Though they might... resist a bit.",
 
   "createtreadmill.ponder.treadmill_fly.header": "Drop it!",
@@ -48,6 +48,10 @@
   "config.createtreadmill.speed_up.tip": "Whether attacking entities on the treadmill speeds it up",
   "config.createtreadmill.maid_magnification": "Maid Affection Stress Multiplier",
   "config.createtreadmill.maid_magnification.tip": "The stress produced by the treadmill will be multiplied by this value and the Maid Affection Level.",
+  "config.createtreadmill.treadmill_test_radius": "Treadmill Detection Range",
+  "config.createtreadmill.treadmill_test_radius.tip": "Detection range for treadmill-related logic.",
+  "config.createtreadmill.treadmill_food_magnification": "Food Exhaustion Multiplier",
+  "config.createtreadmill.treadmill_food_magnification.tip": "Controls the rate at which the player's food exhaustion decreases while on the treadmill.",
 
   "config.jade.plugin_createtreadmill.treadmill_provider": "Treadmill",
   "painting.createtreadmill.little_mad.title": "GLY's Failed Creation",

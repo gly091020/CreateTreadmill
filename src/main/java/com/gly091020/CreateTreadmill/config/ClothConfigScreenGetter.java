@@ -3,6 +3,7 @@ package com.gly091020.CreateTreadmill.config;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import me.shedaniel.clothconfig2.impl.builders.BooleanToggleBuilder;
+import me.shedaniel.clothconfig2.impl.builders.FloatFieldBuilder;
 import me.shedaniel.clothconfig2.impl.builders.IntFieldBuilder;
 import net.createmod.catnip.config.ConfigBase;
 import net.minecraft.client.gui.screens.Screen;
@@ -21,9 +22,11 @@ public class ClothConfigScreenGetter {
         builder.setParentScreen(parent);
         var entryBuilder = builder.entryBuilder();
         var category = builder.getOrCreateCategory(Component.empty());
-        category.addEntry(i(entryBuilder, CONFIG.TREADMILL_STRESS, "stress", 32, 0).build());
+        category.addEntry(i(entryBuilder, CONFIG.TREADMILL_STRESS, "stress", 16, 0).build());
         category.addEntry(i(entryBuilder, CONFIG.MAID_MAGNIFICATION, "maid_magnification", 16, 0).build());
         category.addEntry(i(entryBuilder, CONFIG.TREADMILL_BASE_SPEED, "base_speed", 32, 0).build());
+        category.addEntry(i(entryBuilder, CONFIG.TREADMILL_TEST_RADIUS, "treadmill_test_radius", 10, 0).build());
+        category.addEntry(f(entryBuilder, CONFIG.TREADMILL_FOOD_MAGNIFICATION, "treadmill_food_magnification", 0.01f, 0).build());
         category.addEntry(b(entryBuilder, CONFIG.TREADMILL_DROP_IT, "drop_it").build());
         category.addEntry(b(entryBuilder, CONFIG.TREADMILL_BREAK, "break").build());
         category.addEntry(b(entryBuilder, CONFIG.TREADMILL_SPEED_UP, "speed_up").build());
@@ -65,6 +68,16 @@ public class ClothConfigScreenGetter {
                                     ConfigBase.ConfigInt configKey,
                                     String key, int defaultValue){
         return i(entryBuilder, configKey, key, defaultValue, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    public static FloatFieldBuilder f(ConfigEntryBuilder entryBuilder,
+                                    ConfigBase.ConfigFloat configKey,
+                                    String key, float defaultValue, float min){
+        return entryBuilder.startFloatField(getTransform(key), configKey.get().floatValue())
+                .setDefaultValue(defaultValue)
+                .setMin(min)
+                .setTooltip(getTransform(key + ".tip"))
+                .setSaveConsumer(i -> configKey.set(i.doubleValue()));
     }
 
     public static Component getTransform(String name){
