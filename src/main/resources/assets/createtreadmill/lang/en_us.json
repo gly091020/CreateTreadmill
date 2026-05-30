@@ -17,7 +17,7 @@
   "createtreadmill.ponder.treadmill_fly.header": "Drop it!",
   "createtreadmill.ponder.treadmill_fly.text_1": "The stress on this treadmill is reversed...",
   "createtreadmill.ponder.treadmill_fly.text_2": "So creatures standing on it will be thrown off.",
-  "createtreadmill.ponder.treadmill_fly.text_3": "I won't actually move the entity... Let's pretend a villager got launched.",
+  "createtreadmill.ponder.treadmill_fly.text_3": "Villager: I'm free!!",
 
   "createtreadmill.ponder.treadmill_speedup.header": "Speed Boost",
   "createtreadmill.ponder.treadmill_speedup.text_1": "32 RPM",

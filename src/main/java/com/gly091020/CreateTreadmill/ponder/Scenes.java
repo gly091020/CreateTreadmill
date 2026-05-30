@@ -3,6 +3,8 @@ package com.gly091020.CreateTreadmill.ponder;
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
+import net.createmod.ponder.api.element.ElementLink;
+import net.createmod.ponder.api.element.EntityElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
@@ -10,12 +12,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.phys.Vec3;
 
 public class Scenes {
     public static void treadmillRun(SceneBuilder builder, SceneBuildingUtil util){
@@ -96,13 +100,82 @@ public class Scenes {
                 .text("所以上面的生物会被抛出去。")
                 .pointAt(util.vector().of(2, 2, 2));
         scene.idle(50);
-        scene.overlay().showText(40)
+
+        // 创建一个精确坐标的坐标系
+        Vec3 start = util.vector().of(2.5, 2.5, 3.0);
+        // 创建村民
+        ElementLink<EntityElement> villager = scene.world().createEntity(level -> {
+            Villager entity = new Villager(EntityType.VILLAGER, level);
+            entity.setPos(start.x, start.y, start.z);
+            entity.setYRot(Direction.SOUTH.toYRot());   // 设置朝向
+            entity.setNoGravity(true);
+            return entity;
+        });
+
+        scene.overlay().showText(10)
                 .placeNearTarget()
-                .text("我不会移动实体……假装有个村民被推了出去")
-                .pointAt(util.vector().of(2, 2, 2));
-        scene.idle(40);
+                .text("村民：我“免费”了！！")
+                .pointAt(util.vector().of(2, 3, 3));
+        scene.idle(20);
+        animateEntityArc(
+                scene,
+                villager,
+                start,
+                Direction.SOUTH,
+                5,
+                1.05,
+                15
+        );
+
+        scene.world().modifyEntity(villager, Entity::discard);
+
+        scene.idle(20);
         scene.markAsFinished();
     }
+
+    // 让实体抛物线移动
+    private static void animateEntityArc(
+            CreateSceneBuilder scene,
+            ElementLink<EntityElement> entityLink,
+            Vec3 start,
+            Direction direction,
+            double distance,
+            double height,
+            int duration
+    ) {
+        Vec3 forward = Vec3.atLowerCornerOf(direction.getNormal());
+
+        for (int tick = 0; tick <= duration; tick++) {
+            final double progress = tick / (double) duration;
+            final double nextProgress = Math.min(1.0, (tick + 1) / (double) duration);
+
+            final Vec3 position = start
+                    .add(forward.scale(distance * progress))
+                    .add(0, height * Math.sin(Math.PI * progress), 0);
+
+            final Vec3 nextPosition = start
+                    .add(forward.scale(distance * nextProgress))
+                    .add(0, height * Math.sin(Math.PI * nextProgress), 0);
+
+            final Vec3 motion = nextPosition.subtract(position);
+
+            scene.world().modifyEntity(entityLink, (Entity entity) -> {
+                entity.setNoGravity(true);
+                entity.setDeltaMovement(motion);
+                entity.moveTo(
+                        position.x,
+                        position.y,
+                        position.z,
+                        direction.toYRot(),
+                        0
+                );
+                entity.tickCount++;
+            });
+
+            scene.idle(1);
+        }
+    }
+
 
     public static void treadmillSpeedUp(SceneBuilder builder, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(builder);
