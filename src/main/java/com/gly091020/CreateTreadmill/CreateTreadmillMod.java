@@ -99,8 +99,8 @@ public class CreateTreadmillMod {
             .renderer(() -> TreadmillRenderer::new)
             .validBlock(TREADMILL_BLOCK)
             .register();
-    public static final PartialModel BELT_MODEL = PartialModel.of(ResourceLocation.fromNamespaceAndPath(ModID, "block/belt"));
-    public static final SpriteShiftEntry BELT_SHIFT = SpriteShifter.get(ResourceLocation.fromNamespaceAndPath(ModID, "block/belt"), ResourceLocation.fromNamespaceAndPath(ModID, "block/belt_shift"));
+    public static final PartialModel BELT_MODEL = PartialModel.of(ResourceLocation.fromNamespaceAndPath(ModID, "block/treadmill_belt"));
+    public static final SpriteShiftEntry BELT_SHIFT = SpriteShifter.get(ResourceLocation.fromNamespaceAndPath(ModID, "block/treadmill_belt"), ResourceLocation.fromNamespaceAndPath(ModID, "block/belt_shift"));
 
     public static final Map<Integer, LivingEntity> WALKING_ENTITY = new HashMap<>();
 
@@ -135,6 +135,8 @@ public class CreateTreadmillMod {
     public static boolean hasMaidUseHandCrank(){
         return ModList.get().isLoaded("muhc");
     }
+
+    public static boolean hasSable(){return ModList.get().isLoaded("sable");}
 
     @EventBusSubscriber
     public static class HandleEvent{

@@ -2,24 +2,39 @@ package com.gly091020.CreateTreadmill.ponder;
 
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
+import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.EntityElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
+import net.createmod.ponder.foundation.ui.PonderTagScreen;
+import net.createmod.ponder.foundation.ui.PonderUI;
+import net.minecraft.advancements.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.toasts.AdvancementToast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.component.ResolvableProfile;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 public class Scenes {
     public static void treadmillRun(SceneBuilder builder, SceneBuildingUtil util){
@@ -199,7 +214,7 @@ public class Scenes {
         scene.world().showSection(selection, Direction.DOWN);
         scene.idle(5);
         scene.world().showSection(util.select().position(util.grid().at(1, 1, 3)), Direction.DOWN);
-        scene.world().createEntity(level -> {
+        var villager = scene.world().createEntity(level -> {
             var entity = new Villager(EntityType.VILLAGER, level);
             entity.setPos(1, 1, 1);
             var e = level.getBlockEntity(util.grid().at(2, 1, 3));
@@ -242,5 +257,62 @@ public class Scenes {
                 .pointAt(util.vector().of(2, 2, 2));
         scene.idle(45);
         scene.markAsFinished();
+
+        scene.idle(100);
+        scene.world().moveDeployer(util.grid().at(2, 5, 2), 1, 5);
+        scene.idle(5);
+        scene.world().modifyEntity(villager, Entity::kill);
+        for (int i = 0; i < 20; i++) {
+            scene.world().modifyEntity(villager, e -> ((Mob)e).deathTime++);
+            scene.idle(1);
+            if(i == 15){
+                scene.addInstruction(ponderScene ->
+                        Minecraft.getInstance().getToasts().addToast(new AdvancementToast(createClientAdvancement()){
+                            @Override
+                            public @NotNull Visibility render(@NotNull GuiGraphics p_281813_, @NotNull ToastComponent p_282243_, long p_282604_) {
+                                if(!(Minecraft.getInstance().screen instanceof PonderUI))
+                                    return Visibility.HIDE;
+                                return super.render(p_281813_, p_282243_, p_282604_);
+                            }
+                        }));
+            }
+        }
+        scene.world().modifyEntity(villager, Entity::discard);
+    }
+
+    public static AdvancementHolder createClientAdvancement() {
+        ResourceLocation id = ResourceLocation.fromNamespaceAndPath("createtreadmill", "run_to_die");
+
+        // ===== 1. DisplayInfo =====
+        ItemStack icon = CreateTreadmillMod.TREADMILL_ITEM.asStack();
+
+        DisplayInfo display = new DisplayInfo(
+                icon,
+                Component.translatable("advancement.createtreadmill.run_to_die"),
+                Component.translatable("advancement.createtreadmill.run_to_die.desc")
+                        .withStyle(style -> style.withColor(0xDBA213)),
+                Optional.empty(), // background
+                AdvancementType.GOAL,
+                true,   // show toast
+                true,   // announce to chat
+                true    // hidden
+        );
+
+        Map<String, Criterion<?>> criteria = new HashMap<>();
+
+        AdvancementRequirements requirements = AdvancementRequirements.allOf(criteria.keySet());
+
+        Advancement advancement = new Advancement(
+                Optional.of(ResourceLocation.fromNamespaceAndPath("create", "hand_crank_000")), // parent
+                Optional.of(display),
+                AdvancementRewards.EMPTY,
+                criteria,
+                requirements,
+                true,
+                Optional.empty()
+        );
+
+        // ===== 5. Holder =====
+        return new AdvancementHolder(id, advancement);
     }
 }

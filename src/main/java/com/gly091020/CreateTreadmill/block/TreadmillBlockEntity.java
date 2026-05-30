@@ -3,6 +3,7 @@ package com.gly091020.CreateTreadmill.block;
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.Part;
 import com.gly091020.CreateTreadmill.maid.MaidHelper;
+import com.gly091020.CreateTreadmill.sable.SableUtil;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.HorizontalKineticBlock;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -218,23 +219,26 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     }
 
     public Vec3 getFixedPos(){
+        Vec3 r;
         var p = this.getBlockPos().above();
         var y = p.getY() + 5.5 / 16;
+        r = Vec3.atCenterOf(p);
         switch (getBlockState().getValue(HORIZONTAL_FACING)){
             case WEST -> {
-                return new Vec3(p.getX() + 1, y, p.getZ() + 0.5);
+                r = new Vec3(p.getX() + 1, y, p.getZ() + 0.5);
             }
             case EAST -> {
-                return new Vec3(p.getX(), y, p.getZ() + 0.5);
+                r = new Vec3(p.getX(), y, p.getZ() + 0.5);
             }
             case NORTH -> {
-                return new Vec3(p.getX() + 0.5, y, p.getZ() + 1);
+                r = new Vec3(p.getX() + 0.5, y, p.getZ() + 1);
             }
             case SOUTH -> {
-                return new Vec3(p.getX() + 0.5, y, p.getZ());
+                r = new Vec3(p.getX() + 0.5, y, p.getZ());
             }
         }
-        return Vec3.atCenterOf(p);
+        if(CreateTreadmillMod.hasSable())return SableUtil.getReallyPosition(level, r);
+        return r;
     }
 
     public static TreadmillBlockEntity getBlockEntityByEntity(Entity entity){
@@ -261,7 +265,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
 
     @Override
     public void lazyTick() {
-        isRunning = isMoving();
+        isRunning = CreateTreadmillMod.hasSable() ? SableUtil.isMoving(this) : isMoving();
         if(isRunning != isRuned){
             isRuned = isRunning;
             update();

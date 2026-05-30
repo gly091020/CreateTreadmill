@@ -47,7 +47,5 @@ public class MaidMotorItem extends BlockItem {
             if(maid != null)
                 components.add(Component.translatable("block.createtreadmill.maid_motor.maid_name", maid.getName()));
         }
-        components.add(Component.translatable("block.createtreadmill.maid_motor.tip1"));
-        components.add(Component.translatable("block.createtreadmill.maid_motor.tip2"));
     }
 }

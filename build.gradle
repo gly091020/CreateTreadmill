@@ -19,6 +19,11 @@ repositories {
         name = "Modrinth"
         url = "https://api.modrinth.com/maven"
     }
+    maven { url "https://maven.ryanhcode.dev/releases" }
+    maven {
+        name = 'BlameJared Maven (CrT / Bookshelf)'
+        url = 'https://maven.blamejared.com'
+    }
 }
 
 base {
@@ -131,12 +136,18 @@ dependencies {
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
     implementation "curse.maven:touhou-little-maid-355044:7307724"
-    runtimeOnly "curse.maven:jade-324717:6853386"
     runtimeOnly("curse.maven:modern-ui-352491:6200236")
     implementation "curse.maven:cloth-config-348521:5729127"
     implementation "curse.maven:jade-324717:6853386"
     compileOnly files("libs/touhou_little_mad-0.1.2-alpha.jar")
     implementation ("maven.modrinth:maidusehandcrank:NfLzVMT9")  // 女仆摇曲柄太超模了，我的数据还是保守了
+
+    implementation("dev.ryanhcode.sable:sable-neoforge-${minecraft_version}:${sable_version}")
+    implementation("dev.simulated_team.simulated:simulated-neoforge-${minecraft_version}:${create_aeronautics_version}") { transitive = false }
+    implementation("foundry.veil:veil-neoforge-${project.minecraft_version}:${project.veil_version}") {
+        exclude group: "maven.modrinth"
+        exclude group: "me.fallenbreath"
+    }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -153,10 +164,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
                              mod_version            : mod_version,
                              mod_authors            : mod_authors,
                              mod_description        : mod_description,
-                             create_version:create_version,
-                             ponder_version:ponder_version,
-                             flywheel_version:flywheel_version,
-                             registrate_version:registrate_version
+                             mod_credits: mod_credits
     ]
     inputs.properties replaceProperties
     expand replaceProperties
