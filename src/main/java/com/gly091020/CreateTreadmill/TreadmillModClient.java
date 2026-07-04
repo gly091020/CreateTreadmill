@@ -17,6 +17,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 import static com.gly091020.CreateTreadmill.CreateTreadmillMod.ModID;
+import static com.gly091020.CreateTreadmill.CreateTreadmillMod.hasMaid;
 
 @SuppressWarnings("all")
 @Mod(value = ModID, dist = Dist.CLIENT)
@@ -30,7 +31,7 @@ public class TreadmillModClient {
     public static class EventHandler{
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            if(ModList.get().isLoaded("touhou_little_maid")){
+            if(hasMaid()){
                 event.enqueueWork(() -> {
                     ItemBlockRenderTypes.setRenderLayer(MaidPlugin.MAID_MOTOR_BLOCK.get(),
                             RenderType.translucent());
