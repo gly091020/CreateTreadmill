@@ -160,6 +160,7 @@ public class MaidMotorBlockEntity extends CreativeMotorBlockEntity {
             renderMaid.setOnGround(true);
             renderMaid.tickCount++;
             renderMaid.walkAnimation.update(Math.abs(getSpeed()) > 0 ? Math.abs(getSpeed() / 16) : 0, 0.4f);
+            renderMaid.setSprinting(true);
         }
     }
 

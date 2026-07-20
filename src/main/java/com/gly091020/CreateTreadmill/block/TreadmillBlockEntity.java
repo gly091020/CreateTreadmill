@@ -76,6 +76,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
                 onTreadmillEntity.setDeltaMovement(Vec3.atLowerCornerOf(getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING).getNormal()).multiply(0.3f, 0, 0.3f));
                 onTreadmillEntity.lookAt(EntityAnchorArgument.Anchor.EYES, onTreadmillEntity.getEyePosition().relative(getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING), 1));
                 onTreadmillEntity.setPose(Pose.STANDING);
+                onTreadmillEntity.setSprinting(true);
                 if(onTreadmillEntity instanceof TamableAnimal tamableAnimal){
                     tamableAnimal.setInSittingPose(false);
                 }
@@ -142,6 +143,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
                 this.onTreadmillEntity.setDeltaMovement(Vec3.ZERO);
             CreateTreadmillMod.WALKING_ENTITY.remove(this.onTreadmillEntity.getId());
             this.onTreadmillEntity.walkAnimation.setSpeed(0);
+            this.onTreadmillEntity.setSprinting(false);
         }
         if (onTreadmillEntity != null) {
             CreateTreadmillMod.WALKING_ENTITY.put(onTreadmillEntity.getId(), onTreadmillEntity);
