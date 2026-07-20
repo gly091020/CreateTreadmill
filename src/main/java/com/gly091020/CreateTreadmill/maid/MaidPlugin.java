@@ -30,7 +30,7 @@ import java.util.Optional;
 import static com.simibubi.create.foundation.data.ModelGen.customItemModel;
 import static com.simibubi.create.foundation.data.TagGen.axeOrPickaxe;
 
-//@LittleMaidExtension
+@LittleMaidExtension
 public class MaidPlugin implements ILittleMaid {
     public static final BlockEntry<MaidMotorBlock> MAID_MOTOR_BLOCK = CreateTreadmillMod.REGISTRIES
             .block("maid_motor", MaidMotorBlock::new)

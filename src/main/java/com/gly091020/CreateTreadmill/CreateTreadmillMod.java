@@ -76,7 +76,7 @@ public class CreateTreadmillMod {
                     .icon(TREADMILL_ITEM::asStack)
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(TREADMILL_ITEM, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
-                        if(hasMaid()){
+                        if(ModList.get().isLoaded("touhou_little_maid")){
                             output.accept(MaidPlugin.MAID_MOTOR_BLOCK, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
                         }
                         if(isCreator()){
@@ -116,8 +116,11 @@ public class CreateTreadmillMod {
         container.registerConfig(ModConfig.Type.COMMON, CONFIG.specification);
         REGISTRIES.registerEventListeners(bus);
         CREATIVE_MODE_TAB_REGISTER.register(bus);
-        if(hasMaid()){
+        if(ModList.get().isLoaded("touhou_little_maid")){
             MaidPlugin.registryData(bus);
+        }
+        if(ModList.get().isLoaded("touhou_little_mad")){
+            LittleMadRegistry.registry();
         }
     }
 
@@ -126,11 +129,11 @@ public class CreateTreadmillMod {
     }
 
     public static boolean hasMaid(){
-        return false;
+        return ModList.get().isLoaded("touhou_little_maid");
     }
 
     public static boolean hasMaidUseHandCrank(){
-        return false;
+        return ModList.get().isLoaded("muhc");
     }
 
     public static boolean hasSable(){return ModList.get().isLoaded("sable");}
