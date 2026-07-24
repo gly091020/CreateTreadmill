@@ -5,6 +5,7 @@ import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
 import com.gly091020.CreateTreadmill.config.TreadmillConfig;
 import com.gly091020.CreateTreadmill.item.TreadmillItem;
 import com.gly091020.CreateTreadmill.little_mad.LittleMadRegistry;
+import com.gly091020.CreateTreadmill.love_loathe.LoveLoatheEventHandler;
 import com.gly091020.CreateTreadmill.maid.MaidPlugin;
 import com.gly091020.CreateTreadmill.renderer.TreadmillRenderer;
 import com.gly091020.CreateTreadmill.renderer.TreadmillVisual;
@@ -44,6 +45,7 @@ import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.event.RenderLivingEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -76,7 +78,7 @@ public class CreateTreadmillMod {
                     .icon(TREADMILL_ITEM::asStack)
                     .displayItems((itemDisplayParameters, output) -> {
                         output.accept(TREADMILL_ITEM, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
-                        if(ModList.get().isLoaded("touhou_little_maid")){
+                        if(CreateTreadmillMod.hasMaid()){
                             output.accept(MaidPlugin.MAID_MOTOR_BLOCK, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
                         }
                         if(isCreator()){
@@ -116,12 +118,14 @@ public class CreateTreadmillMod {
         container.registerConfig(ModConfig.Type.COMMON, CONFIG.specification);
         REGISTRIES.registerEventListeners(bus);
         CREATIVE_MODE_TAB_REGISTER.register(bus);
-        if(ModList.get().isLoaded("touhou_little_maid")){
+        if(CreateTreadmillMod.hasMaid()){
             MaidPlugin.registryData(bus);
         }
         if(ModList.get().isLoaded("touhou_little_mad")){
             LittleMadRegistry.registry();
         }
+        if(hasLoveLoathe())
+            NeoForge.EVENT_BUS.register(LoveLoatheEventHandler.class);
     }
 
     public static boolean isCreator() {
@@ -134,6 +138,10 @@ public class CreateTreadmillMod {
 
     public static boolean hasMaidUseHandCrank(){
         return ModList.get().isLoaded("muhc");
+    }
+
+    public static boolean hasLoveLoathe(){
+        return ModList.get().isLoaded("callresponse");
     }
 
     public static boolean hasSable(){return ModList.get().isLoaded("sable");}

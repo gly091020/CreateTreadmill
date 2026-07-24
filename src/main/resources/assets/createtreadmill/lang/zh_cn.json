@@ -70,5 +70,8 @@
   "config.createtreadmill.treadmill_test_radius": "跑步机检测范围",
   "config.createtreadmill.treadmill_test_radius.tip": "跑步机相关逻辑的检测范围",
   "config.createtreadmill.treadmill_food_magnification": "饱食度减少乘数",
-  "config.createtreadmill.treadmill_food_magnification.tip": "控制玩家在跑步机上减少饱食度的速度"
+  "config.createtreadmill.treadmill_food_magnification.tip": "控制玩家在跑步机上减少饱食度的速度",
+
+  "config.createtreadmill.treadmill_saying": "女仆在跑步机上的说话频率",
+  "config.createtreadmill.treadmill_saying.tip": "[爱憎分明联动]跑步机上的女仆说话频率（单位：分钟，0为关闭此功能）"
 }

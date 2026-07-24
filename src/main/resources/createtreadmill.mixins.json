@@ -1,0 +1,10 @@
+{
+  "package": "com.gly091020.CreateTreadmill.mixin",
+  "mixins": [
+    "love_loathe.StandUpActionMixin",
+    "love_loathe.WalkToOwnerAndSitActionMixin",
+    "love_loathe.WalkToOwnerAndTakeFoodActionMixin"
+  ],
+  "client": [
+  ]
+}

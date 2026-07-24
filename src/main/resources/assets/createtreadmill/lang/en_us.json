@@ -52,6 +52,8 @@
   "config.createtreadmill.treadmill_test_radius.tip": "Detection range for treadmill-related logic.",
   "config.createtreadmill.treadmill_food_magnification": "Food Exhaustion Multiplier",
   "config.createtreadmill.treadmill_food_magnification.tip": "Controls the rate at which the player's food exhaustion decreases while on the treadmill.",
+  "config.createtreadmill.treadmill_saying": "Maid dialogue frequency on the treadmill",
+  "config.createtreadmill.treadmill_saying.tip": "[Love & Loathe Collaboration] Maid speech frequency on the treadmill (in minutes, 0 disables this feature)",
 
   "config.jade.plugin_createtreadmill.treadmill_provider": "Treadmill",
   "painting.createtreadmill.little_mad.title": "GLY's Failed Creation",

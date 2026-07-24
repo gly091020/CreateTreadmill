@@ -3,6 +3,7 @@ package com.gly091020.CreateTreadmill.block;
 
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
+import com.gly091020.CreateTreadmill.love_loathe.LoveLoatheUtil;
 import com.gly091020.CreateTreadmill.maid.MaidHelper;
 import com.gly091020.CreateTreadmill.maid.MaidUseHandCrankUtil;
 import com.simibubi.create.content.kinetics.motor.CreativeMotorBlock;

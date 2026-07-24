@@ -12,6 +12,7 @@ public class TreadmillConfig extends ConfigBase {
     public final ConfigBool TREADMILL_DROP_IT = b(true, "Treadmill Toss", "Whether the treadmill can throw off entities (when powered in reverse)");
     public final ConfigBool TREADMILL_BREAK = b(true, "Entity Escape", "Whether entities on the treadmill can break free");
     public final ConfigBool TREADMILL_SPEED_UP = b(true, "Treadmill Boost", "Whether attacking entities on the treadmill speeds it up");
+    public final ConfigInt TREADMILL_SAYING = i(60, 0, "Maid dialogue frequency on the treadmill", "[Love & Loathe Collaboration] Maid speech frequency on the treadmill (in minutes, 0 disables this feature)");
     @Override
     public @NotNull String getName() {
         return "treadmill";

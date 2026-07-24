@@ -30,7 +30,7 @@ public class TreadmillModClient {
     public static class EventHandler{
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            if(ModList.get().isLoaded("touhou_little_maid")){
+            if(CreateTreadmillMod.hasMaid()){
                 event.enqueueWork(() -> {
                     ItemBlockRenderTypes.setRenderLayer(MaidPlugin.MAID_MOTOR_BLOCK.get(),
                             RenderType.translucent());

@@ -26,6 +26,7 @@ public class ClothConfigScreenGetter {
         category.addEntry(i(entryBuilder, CONFIG.MAID_MAGNIFICATION, "maid_magnification", 16, 0).build());
         category.addEntry(i(entryBuilder, CONFIG.TREADMILL_BASE_SPEED, "base_speed", 32, 0).build());
         category.addEntry(i(entryBuilder, CONFIG.TREADMILL_TEST_RADIUS, "treadmill_test_radius", 10, 0).build());
+        category.addEntry(i(entryBuilder, CONFIG.TREADMILL_SAYING, "treadmill_saying", 1, 0).build());
         category.addEntry(f(entryBuilder, CONFIG.TREADMILL_FOOD_MAGNIFICATION, "treadmill_food_magnification", 0.01f, 0).build());
         category.addEntry(b(entryBuilder, CONFIG.TREADMILL_DROP_IT, "drop_it").build());
         category.addEntry(b(entryBuilder, CONFIG.TREADMILL_BREAK, "break").build());

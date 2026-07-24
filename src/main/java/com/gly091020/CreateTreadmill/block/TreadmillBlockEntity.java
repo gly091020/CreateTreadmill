@@ -2,6 +2,7 @@ package com.gly091020.CreateTreadmill.block;
 
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.Part;
+import com.gly091020.CreateTreadmill.love_loathe.LoveLoatheUtil;
 import com.gly091020.CreateTreadmill.maid.MaidHelper;
 import com.gly091020.CreateTreadmill.sable.SableUtil;
 import com.simibubi.create.content.kinetics.base.GeneratingKineticBlockEntity;
@@ -353,10 +354,12 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
 
     @Override
     public float calculateAddedStressCapacity() {
-        int maid = 1;
+        float maid = 1;
         if(CreateTreadmillMod.hasMaid() && MaidHelper.isMaid(onTreadmillEntity)){
             maid = CreateTreadmillMod.CONFIG.MAID_MAGNIFICATION.get() * MaidHelper.getMaidLevel(onTreadmillEntity);
             if(maid == 0)maid = 1;
+            if(CreateTreadmillMod.hasLoveLoathe())
+                maid *= (float) LoveLoatheUtil.getHungerEfficiency(onTreadmillEntity);
         }
         return super.calculateAddedStressCapacity() * maid;
     }
