@@ -4,7 +4,8 @@ import com.gly091020.CreateTreadmill.block.TreadmillBlock;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
 import dev.ryanhcode.sable.companion.SableCompanion;
 import dev.ryanhcode.sable.companion.SubLevelAccess;
-import dev.ryanhcode.sable.companion.math.Pose3dc;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -52,5 +53,19 @@ public class SableUtil {
         movement.normalize();
 
         return movement.dot(localDir) > 0;
+    }
+
+    public static Vec3 getOnEntityDirection(Level level, BlockPos pos, Direction facing) {
+        SubLevelAccess subLevelAccess = SableCompanion.INSTANCE.getContaining(level, pos);
+        if (subLevelAccess == null) {
+            Vec3 normal = new Vec3(facing.getNormal().getX(), 0, facing.getNormal().getZ());
+            return normal.normalize();
+        }
+        var pose = subLevelAccess.logicalPose();
+        Vector3d localDir = new Vector3d(facing.getNormal().getX(), 0, facing.getNormal().getZ());
+        pose.orientation().transform(localDir);
+        localDir.y = 0;
+        localDir.normalize();
+        return new Vec3(localDir.x, localDir.y, localDir.z);
     }
 }

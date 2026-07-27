@@ -11,4 +11,17 @@ public class MaidHelper {
     public static boolean isMaid(Entity entity){
         return entity instanceof EntityMaid;
     }
+
+    public static void setMaidHome(Entity entity){
+        var maid = ((EntityMaid)(entity));
+        maid.setHomeModeEnable(true);
+        maid.getSchedulePos().setDimension(maid.level().dimension().location());
+        maid.getSchedulePos().setIdlePos(entity.blockPosition());
+        maid.getSchedulePos().setWorkPos(entity.blockPosition());
+        maid.getSchedulePos().setSleepPos(entity.blockPosition());
+    }
+
+    public static void clearMaidHome(Entity entity){
+        ((EntityMaid)(entity)).setHomeModeEnable(false);
+    }
 }

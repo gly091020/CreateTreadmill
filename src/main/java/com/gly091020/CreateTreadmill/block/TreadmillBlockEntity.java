@@ -1,5 +1,6 @@
 package com.gly091020.CreateTreadmill.block;
 
+import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.Part;
 import com.gly091020.CreateTreadmill.love_loathe.LoveLoatheUtil;
@@ -67,6 +68,10 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
                 setOnTreadmillEntity(null);
                 return;
             }
+            if(CreateTreadmillMod.hasLoveLoathe() && LoveLoatheUtil.isLazy(onTreadmillEntity)) {
+                setOnTreadmillEntity(null);
+                return;
+            }
             setPos();
             speedUp();
             if (onTreadmillEntity instanceof Player player) {
@@ -75,12 +80,25 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
                 }
             }else{
                 onTreadmillEntity.setDeltaMovement(Vec3.atLowerCornerOf(getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING).getNormal()).multiply(0.3f, 0, 0.3f));
-                onTreadmillEntity.lookAt(EntityAnchorArgument.Anchor.EYES, onTreadmillEntity.getEyePosition().relative(getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING), 1));
+
+                if(CreateTreadmillMod.hasSable()){
+                    var d = SableUtil.getOnEntityDirection(level, getBlockPos(), getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING));
+                    float yaw = (float) Math.toDegrees(Math.atan2(-d.x, d.z));
+                    onTreadmillEntity.setYRot(yaw);
+                    onTreadmillEntity.setYHeadRot(yaw);
+                    onTreadmillEntity.setYBodyRot(yaw);
+                    onTreadmillEntity.setXRot(0);
+                }else
+                    onTreadmillEntity.lookAt(EntityAnchorArgument.Anchor.EYES, onTreadmillEntity.getEyePosition().relative(getBlockState().getValue(HorizontalKineticBlock.HORIZONTAL_FACING), 1));
+
                 onTreadmillEntity.setPose(Pose.STANDING);
                 onTreadmillEntity.setSprinting(true);
                 if(onTreadmillEntity instanceof TamableAnimal tamableAnimal){
                     tamableAnimal.setInSittingPose(false);
                 }
+                if(CreateTreadmillMod.hasMaid() && MaidHelper.isMaid(onTreadmillEntity))
+                    MaidHelper.setMaidHome(onTreadmillEntity);
+
                 lazyTick();
             }
             dropIt();
@@ -145,6 +163,8 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
             CreateTreadmillMod.WALKING_ENTITY.remove(this.onTreadmillEntity.getId());
             this.onTreadmillEntity.walkAnimation.setSpeed(0);
             this.onTreadmillEntity.setSprinting(false);
+            if(CreateTreadmillMod.hasMaid() && MaidHelper.isMaid(this.onTreadmillEntity))
+                MaidHelper.clearMaidHome(this.onTreadmillEntity);
         }
         if (onTreadmillEntity != null) {
             CreateTreadmillMod.WALKING_ENTITY.put(onTreadmillEntity.getId(), onTreadmillEntity);
@@ -328,6 +348,7 @@ public class TreadmillBlockEntity extends GeneratingKineticBlockEntity {
     @Override
     public float getGeneratedSpeed() {
         if(canDropIt())return 0;
+        if(CreateTreadmillMod.hasLoveLoathe() && LoveLoatheUtil.isLazy(onTreadmillEntity))return 0;
         int speedUp = this.speedUpTimer > 0 ? 2 : 1;
         float entitySpeed = 1;
         if (onTreadmillEntity instanceof Player player) {

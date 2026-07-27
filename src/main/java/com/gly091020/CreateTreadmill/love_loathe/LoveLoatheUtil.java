@@ -2,11 +2,13 @@ package com.gly091020.CreateTreadmill.love_loathe;
 
 import com.github.tartaricacid.callresponse.compat.emotion.EmotionData;
 import com.github.tartaricacid.callresponse.compat.hunger.HungerData;
+import com.github.tartaricacid.callresponse.compat.task.LazyMaidTask;
 import com.github.tartaricacid.touhoulittlemaid.entity.passive.EntityMaid;
 import com.gly091020.CreateTreadmill.CreateTreadmillMod;
 import com.gly091020.CreateTreadmill.Part;
 import com.gly091020.CreateTreadmill.block.TreadmillBlock;
 import com.gly091020.CreateTreadmill.block.TreadmillBlockEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
@@ -41,6 +43,15 @@ public class LoveLoatheUtil {
         var treadmill = TreadmillBlock.findPart(maid.level(), state, pos, Part.BOTTOM_FRONT);
         if(!(maid.level().getBlockEntity(treadmill) instanceof TreadmillBlockEntity blockEntity))return null;
         return blockEntity;
+    }
+
+    public static boolean isLazy(EntityMaid maid){
+        return maid.getTask() instanceof LazyMaidTask;
+    }
+
+    public static boolean isLazy(Entity entity){
+        if(!(entity instanceof EntityMaid maid))return false;
+        return maid.getTask() instanceof LazyMaidTask;
     }
 
     @Nullable
